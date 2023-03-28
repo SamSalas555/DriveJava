@@ -10,27 +10,17 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import javax.swing.JFileChooser;
 
 public class ClienteDrive {
     public static void main(String[] args){
         File   carpeta = new File("");
-        File   carpeta2 = new File(carpeta.getAbsolutePath()+"\\carpetaCliente");
+        File   carpeta2 = new File(carpeta.getAbsolutePath()+File.separator+"carpetaCliente");
         
         JFileChooser fileChooser = new JFileChooser(carpeta2);
         fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
@@ -64,7 +54,9 @@ public class ClienteDrive {
                 //Visualizar carpeta local
                     case 1:
                         System.out.println("1. Visualizar carpeta local");
-                        ArchivoDrive arD = new ArchivoDrive();
+                        ArchivoDrive arD;
+                        System.out.println(carpeta2.getAbsolutePath());
+                        arD = new ArchivoDrive();
                         System.out.println(arD.verContenidoCarpeta(carpeta2, opcion));
                         
                     break;
@@ -93,7 +85,7 @@ public class ClienteDrive {
                             + "debes introducir lo siguiente: dos\\dosA, de lo contrario solo introduce el nombre de la carpeta ");
                         System.out.println("Introduce el nombre:  ");
                         nombreCar = entradaTeclado.readLine();
-                        nuevaCarpeta = new File(carpeta2.getAbsoluteFile()+"\\"+nombreCar);
+                        nuevaCarpeta = new File(carpeta2.getAbsoluteFile()+File.separator+nombreCar);
                         if(nuevaCarpeta.mkdirs()){
                             System.out.println(" Carpeta creada con exito ");
                         }
@@ -133,7 +125,7 @@ public class ClienteDrive {
                             case 1:
                                 System.out.println("Introduce el nombre del archivo a crear en la carpeta local:  ");
                                 nombreArchivo = entradaTeclado.readLine();
-                                archivo = new File(carpeta2.getAbsoluteFile()+"\\"+nombreArchivo);
+                                archivo = new File(carpeta2.getAbsoluteFile()+File.separator+nombreArchivo);
                                 if(archivo.createNewFile()){
                                     System.out.println("Nuevo archivo creado con éxito.");
                                 }else {
@@ -161,7 +153,7 @@ public class ClienteDrive {
                                     //subir archivo
                                     } else {
                                         archivoEntrada = new FileInputStream(file.getAbsolutePath());
-                                        archivoSalida = new FileOutputStream(carpeta2.getAbsolutePath()+"\\"+file.getName());
+                                        archivoSalida = new FileOutputStream(carpeta2.getAbsolutePath()+File.separator+file.getName());
                                         tam = file.length();
                                         enviados = 0;
                                         while(enviados<tam){
@@ -272,8 +264,8 @@ public class ClienteDrive {
                         System.out.println("7. Descargar archivo o carpeta");
                         
                         System.out.println("Si quieres descargar una carpeta o archivo que esta dentro de una carpeta la carpeta del servidor\n"
-                                + "por ejemplo si hay una carpeta llamada dos y quieres descargar una carpeta o archivo llamada dosA dentro"
-                                + "debes introducir lo siguiente: dos\\dosA, de lo contrario solo introduce el nombre de la carpeta o archivo ");
+                                + "por ejemplo si hay una carpeta llamada Carpeta1 y quieres descargar una carpeta o archivo llamada Carpeta2 dentro"
+                                + "debes introducir lo siguiente: Carpeta1 + Separator + Carpeta2, de lo contrario solo introduce el nombre de la carpeta o archivo ");
                         
                         System.out.println("Para descargar un archivo debes introducir la extención!!");
                         System.out.println("Introduce el nombre:  ");

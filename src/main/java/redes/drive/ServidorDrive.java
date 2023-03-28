@@ -6,14 +6,10 @@ package redes.drive;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-//import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-//import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-//import java.io.OutputStreamWriter;
-//import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -30,7 +26,7 @@ public class ServidorDrive {
             System.out.println("Servidor archivos iniciado, esperando clientes");
             ArchivoDrive arD = new ArchivoDrive();
             File   carpeta = new File("");
-            File   carpeta2 = new File(carpeta.getAbsolutePath()+"\\carpetaServidor");
+            File   carpeta2 = new File(carpeta.getAbsolutePath()+File.separator+ "carpetaServidor");
             carpeta2.setWritable(true);
             File archivo;
             Metadato metEnviar;
@@ -54,7 +50,7 @@ public class ServidorDrive {
                     objetoSalida.writeObject(metEnviar);
                     objetoSalida.flush();
                 }else if(metD1.getOpcion().equals("4")){
-                    File nuevaCarpeta = new File(carpeta2.getAbsoluteFile()+"\\"+metD1.getContenido());
+                    File nuevaCarpeta = new File(carpeta2.getAbsoluteFile()+File.separator+metD1.getContenido());
                     if(nuevaCarpeta.mkdirs()){
                         metEnviar = new Metadato("4","Carpeta creada con exito","");
                         }
@@ -64,7 +60,7 @@ public class ServidorDrive {
                     objetoSalida.writeObject(metEnviar);
                     objetoSalida.flush();
                 }else if(metD1.getOpcion().equals("6")){
-                    archivo = new File(carpeta2.getAbsolutePath()+"\\"+metD1.getContenido());
+                    archivo = new File(carpeta2.getAbsolutePath()+File.separator+metD1.getContenido());
                   
                     if(archivo.exists()){
                         
@@ -137,7 +133,7 @@ public class ServidorDrive {
 
 
                 }else if(metD1.getOpcion().equals("9")){
-                    File selecionado = new File(carpeta2.getAbsoluteFile()+"\\"+metD1.getContenido());
+                    File selecionado = new File(carpeta2.getAbsoluteFile()+File.separator+metD1.getContenido());
                     
                     ArchivoDrive.renombrarArchivoOCarpeta(selecionado.getAbsolutePath(), metD1.getAdicional());
                     if(ArchivoDrive.arRemotoRenombrado){

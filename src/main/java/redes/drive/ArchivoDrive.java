@@ -12,9 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
+
 
 public class ArchivoDrive {
     public static boolean arRemotoRenombrado=false;
@@ -22,16 +20,15 @@ public class ArchivoDrive {
     public String verContenidoCarpeta(File direccion, int esp){
         String archivosL="";
         File[] archivos = direccion.listFiles();
-        int espacio = esp;
         for(File archivo : archivos){
             if(archivo.isDirectory()){
-                archivosL += "  ".repeat(espacio) + archivo.getName()+"\n"; 
-                archivosL += verContenidoCarpeta(archivo, espacio+1);  
+                archivosL += "  ".repeat(esp) +">"+ archivo.getName()+"\n";
+                archivosL += verContenidoCarpeta(archivo, esp +1);
             }
             else{
               // this.setArchivoList(this.getArchivoList()+"  ".repeat(espacio) + archivo.getName());
                // System.out.println("  ".repeat(espacio)+archivo.getName());
-                archivosL += "  ".repeat(espacio) + archivo.getName()+"\n";
+                archivosL += "  ".repeat(esp) +"|-"+ archivo.getName()+"\n";
             }
         }
         return archivosL;
