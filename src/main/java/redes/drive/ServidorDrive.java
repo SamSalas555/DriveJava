@@ -144,12 +144,19 @@ public class ServidorDrive {
                     objetoSalida.writeObject(metEnviar);
                     objetoSalida.flush();
                 }
-
-
+                else if (metD1.getOpcion().equals("11")) {
+                    File seleccionado1 = new File(carpeta2.getAbsoluteFile() + File.separator + metD1.getContenido());
+                    if (seleccionado1.delete()) {
+                        metEnviar = new Metadato("11", "Carpeta o borrado con exito", "");
+                    } else {
+                        metEnviar = new Metadato("11", "No se pudo borrar la carpeta o archivo", "");
+                    }
+                    objetoSalida.writeObject(metEnviar);
+                    objetoSalida.flush();
+                }
                 objetoSalida.close();
                 objetoEntrada.close();
                 clienteMeta.close();
-
             }
 
         } catch (Exception e) {

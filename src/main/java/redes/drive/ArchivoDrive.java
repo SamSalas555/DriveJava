@@ -143,5 +143,9 @@ public class ArchivoDrive {
             }
         }
     }
+    public static void borrarCarpeta(String ruta){
+        File carpeta = new File(ruta);
+        carpeta.delete();
+    }
 
 }

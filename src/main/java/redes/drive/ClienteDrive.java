@@ -338,16 +338,51 @@ public class ClienteDrive {
                         objetoEntrada.close();
                         clienteMeta.close();
                         break;
+                    case 10:
+                        fichero = fileChooser.showOpenDialog(null);
+                        if (fichero == JFileChooser.APPROVE_OPTION) {
+                            System.out.println("Selecciona el archivo o carpeta a borrar:  ");
+                            File seleccionado = fileChooser.getSelectedFile();
+                            ArchivoDrive.borrarCarpeta(seleccionado.getAbsolutePath());
+
+                        } else {
+                            System.out.println("No se ha seleccionado ningún archivo o carpeta.");
+                        }
+                        break;
+                    case 11:
+                        System.out.println("11. Borrar archivo remoto");
+                        System.out.println("Si quieres borrar una carpeta o archivo que esta dentro de una carpeta la carpeta del servidor\n"
+                                + "por ejemplo si hay una carpeta llamada dos y quieres renombrar una carpeta o archivo llamada dosA dentro"
+                                + "debes introducir lo siguiente: dos\\dosA, de lo contrario solo introduce el nombre de la carpeta o archivo ");
+
+                        System.out.println("Para borrar un archivo debes introducir la extención!!");
+                        System.out.println("Introduce el nombre:  ");
+                        nombreCar = entradaTeclado.readLine();
+                        clienteMeta = new Socket("127.0.0.1", 8000);
+                        System.out.println("Conexion exitosa con el servidor");
+                        objetoSalida = new ObjectOutputStream(clienteMeta.getOutputStream());
+                        objetoEntrada = new ObjectInputStream(clienteMeta.getInputStream());
+                        metD = new Metadato("11", nombreCar,"Vacio");
+                        objetoSalida.writeObject(metD);
+                        objetoSalida.flush();
+                        metRecibido = (Metadato) objetoEntrada.readObject();
+                        System.out.println(metRecibido.getContenido());
+                        objetoSalida.close();
+                        objetoEntrada.close();
+                        clienteMeta.close();
+                        break;
                     default:
                         System.out.println("Opcion no valida");
                         break;
+
+
                 }
 
                 if (salir) {
                     break;
                 }
                 System.out.println("\n \n \n");
-            } while (opcion != 10);
+            } while (opcion != 12);
 
             entradaTeclado.close();
         } catch (Exception e) {
@@ -367,7 +402,9 @@ public class ClienteDrive {
         System.out.println("7.  Descargar archivo o carpeta del servidor");
         System.out.println("8.  Renombrar archivos o carpetas locales");
         System.out.println("9.  Renombrar archivos o carpetas remotos");
-        System.out.println("10. Salir");
+        System.out.println("10  Borrar Carpeta Local");
+        System.out.println("11  Borrar Carpeta Remota");
+        System.out.println("12. Salir");
         System.out.println("Introduzca la opción que desea realizar (1-10): ");
     }
 
