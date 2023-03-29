@@ -7,15 +7,15 @@ package redes.drive;
 import java.io.Serializable;
 
 public class Metadato implements Serializable {
-        private String opcion;
-        private String contenido;
-        private String adicional;
-        
-        public Metadato(String opcion, String contenido,String adicional){
-            this.opcion = opcion;
-            this.contenido = contenido;
-            this.adicional = adicional;
-        }
+    private String opcion;
+    private String contenido;
+    private String adicional;
+
+    public Metadato(String opcion, String contenido, String adicional) {
+        this.opcion = opcion;
+        this.contenido = contenido;
+        this.adicional = adicional;
+    }
 
     public String getOpcion() {
         return opcion;
@@ -28,7 +28,6 @@ public class Metadato implements Serializable {
     public String getAdicional() {
         return adicional;
     }
-        
-        
-        
+
+
 }

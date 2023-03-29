@@ -15,61 +15,60 @@ import java.io.OutputStream;
 
 
 public class ArchivoDrive {
-    public static boolean arRemotoRenombrado=false;
+    public static boolean arRemotoRenombrado = false;
 
-    public String verContenidoCarpeta(File direccion, int esp){
-        String archivosL="";
+    public String verContenidoCarpeta(File direccion, int esp) {
+        String archivosL = "";
         File[] archivos = direccion.listFiles();
-        for(File archivo : archivos){
-            if(archivo.isDirectory()){
-                archivosL += "  ".repeat(esp) +">"+ archivo.getName()+"\n";
-                archivosL += verContenidoCarpeta(archivo, esp +1);
-            }
-            else{
-              // this.setArchivoList(this.getArchivoList()+"  ".repeat(espacio) + archivo.getName());
-               // System.out.println("  ".repeat(espacio)+archivo.getName());
-                archivosL += "  ".repeat(esp) +"|-"+ archivo.getName()+"\n";
+        for (File archivo : archivos) {
+            if (archivo.isDirectory()) {
+                archivosL += "  ".repeat(esp) + ">" + archivo.getName() + "\n";
+                archivosL += verContenidoCarpeta(archivo, esp + 1);
+            } else {
+                // this.setArchivoList(this.getArchivoList()+"  ".repeat(espacio) + archivo.getName());
+                // System.out.println("  ".repeat(espacio)+archivo.getName());
+                archivosL += "  ".repeat(esp) + "|-" + archivo.getName() + "\n";
             }
         }
         return archivosL;
     }
 
-    public static void renombrarArchivoOCarpeta(String ruta, String nuevoNombre){
-      
+    public static void renombrarArchivoOCarpeta(String ruta, String nuevoNombre) {
+
         File file = new File(ruta);
         String nombreActual = file.getName();
         int index = nombreActual.lastIndexOf(".");
 
         String nuevaRuta;
-        
-        if(index == -1){
+
+        if (index == -1) {
             //Si se esta renombrando una carpeta
-            nuevaRuta = file.getParent() + File.separator + nuevoNombre ;
-        }else{
+            nuevaRuta = file.getParent() + File.separator + nuevoNombre;
+        } else {
             //Si se esta renombrando un archivo
             nuevaRuta = file.getParent() + File.separator + nuevoNombre + nombreActual.substring(index);
         }
 
-       File newFile = new File(nuevaRuta);
-        
+        File newFile = new File(nuevaRuta);
+
         if (file.renameTo(newFile)) {
             System.out.println("Archivo o carpeta renombrado correctamente");
             arRemotoRenombrado = true;
         } else {
             System.out.println("No se pudo renombrar el archivo o carpeta");
-        }    
+        }
 
     }
 
-    public static void copiarCarpeta(File origenCarpeta, File destinoCarpeta) throws IOException{
+    public static void copiarCarpeta(File origenCarpeta, File destinoCarpeta) throws IOException {
 
-        
+
         if (origenCarpeta.isDirectory()) {
-            
+
             if (!destinoCarpeta.exists()) {
                 destinoCarpeta.mkdir();
             }
-    
+
             String[] archivos = origenCarpeta.list();
             for (String archivo : archivos) {
                 File srcArchivo = new File(origenCarpeta, archivo);
@@ -79,13 +78,13 @@ public class ArchivoDrive {
         } else {
             InputStream in = new FileInputStream(origenCarpeta);
             OutputStream out = new FileOutputStream(destinoCarpeta);
-    
+
             byte[] buffer = new byte[1024];
             int length;
             while ((length = in.read(buffer)) > 0) {
                 out.write(buffer, 0, length);
             }
-    
+
             in.close();
             out.close();
         }
@@ -106,28 +105,28 @@ public class ArchivoDrive {
             long archivoTam = dis.readLong();
             byte[] buffer = new byte[4096];
             try (FileOutputStream fos = new FileOutputStream(archivo)) {
-                    int count;
-                    long totalBytesLeer = 0;
-                    /*
-                     * leemos la cantidad de bytes que faltan para alcanzar el tamaño total del
-                     * archivo, o la cantidad de bytes que hay en el buffer si ese tamaño es menor.
-                     * De esta manera, nos aseguramos de que leamos exactamente la cantidad correcta
-                     * de bytes para cada archivo, lo que evita lanzar java.io.EOFException.
-                     */
-                    while (totalBytesLeer < archivoTam && (count = dis.read(buffer, 0, (int)Math.min(archivoTam - totalBytesLeer, buffer.length))) != -1) {
-                        fos.write(buffer, 0, count);
-                        totalBytesLeer += count;
-                    }
+                int count;
+                long totalBytesLeer = 0;
+                /*
+                 * leemos la cantidad de bytes que faltan para alcanzar el tamaño total del
+                 * archivo, o la cantidad de bytes que hay en el buffer si ese tamaño es menor.
+                 * De esta manera, nos aseguramos de que leamos exactamente la cantidad correcta
+                 * de bytes para cada archivo, lo que evita lanzar java.io.EOFException.
+                 */
+                while (totalBytesLeer < archivoTam && (count = dis.read(buffer, 0, (int) Math.min(archivoTam - totalBytesLeer, buffer.length))) != -1) {
+                    fos.write(buffer, 0, count);
+                    totalBytesLeer += count;
+                }
             }
         }
-        }
-        
-        //Funcion recursiva para enviar carpetas a traves del socket 
-        public static void enviarCarpeta(File carpeta, DataOutputStream dos) throws IOException {
+    }
+
+    //Funcion recursiva para enviar carpetas a traves del socket
+    public static void enviarCarpeta(File carpeta, DataOutputStream dos) throws IOException {
         dos.writeUTF(carpeta.getName());
         dos.writeBoolean(carpeta.isDirectory());
         if (carpeta.isDirectory()) {
-           
+
             File[] archivos = carpeta.listFiles();
             dos.writeInt(archivos.length);
             for (File archivo : archivos) {
